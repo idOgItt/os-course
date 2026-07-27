@@ -1,0 +1,465 @@
+- group: syscalls
+  start: 10-09-2024 18:00
+  deadline: 26-09-2024 23:59
+  second_deadline: 01-02-2025 23:59
+  enabled: true
+  tasks:
+    - task: hello_world
+      score: 100
+
+      url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/hello_world
+      allow_list: &allow_list
+        - sem/asm/src/lib.rs
+        - sem/asm_syscall/src/lib.rs
+        - sem/atomic/src/impl.s
+        - sem/backtrace/src/lib.rs
+        - sem/gdb/key.txt
+        - sem/hello_world/src/*.rs
+        - sem/jobserver/src/*.rs
+        - sem/rop/src/ropchain.rs
+        - sem/rsh/src/*.rs
+        - sem/rwlock/src/sync.rs
+        - kernel/src/allocator/big.rs
+        - kernel/src/fs/block_bitmap.rs
+        - kernel/src/fs/block_cache.rs
+        - kernel/src/fs/file_system.rs
+        - kernel/src/fs/inode.rs
+        - kernel/src/memory/address_space.rs
+        - kernel/src/memory/boot_frame_allocator.rs
+        - kernel/src/memory/main_frame_allocator.rs
+        - kernel/src/memory/mapping.rs
+        - kernel/src/memory/page_allocator.rs
+        - kernel/src/process/mod.rs
+        - kernel/src/process/process.rs
+        - kernel/src/process/registers.rs
+        - kernel/src/process/scheduler.rs
+        - kernel/src/process/syscall.rs
+        - kernel/src/process/table.rs
+        - kernel/src/smp/ap_init.rs
+        - kernel/src/smp/cpu.rs
+        - kernel/src/smp/local_apic.rs
+        - kernel/src/time/rtc.rs
+        - ku/src/allocator/big.rs
+        - ku/src/allocator/dispatcher.rs
+        - ku/src/allocator/fixed_size.rs
+        - ku/src/lru.rs
+        - ku/src/memory/block.rs
+        - ku/src/process/elf.rs
+        - ku/src/ring_buffer.rs
+        - ku/src/sync/sequence_lock.rs
+        - ku/src/sync/spinlock.rs
+        - ku/src/time/correlation_interval.rs
+        - ku/src/time/correlation_point.rs
+        - user/cow_fork/src/main.rs
+        - user/eager_fork/src/main.rs
+        - user/lib/src/memory/mod.rs
+        - user/lib/src/syscall.rs
+      check:
+        - cd sem/hello_world && cargo test
+
+    - task: rsh_fork
+      score: 100
+
+      url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/blob/master/sem/rsh/README.md
+      allow_list: *allow_list
+      check:
+        - cd sem/rsh && cargo test simple
+
+    - task: rsh_file
+      score: 100
+
+      url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/blob/master/sem/rsh/README.md#file
+      allow_list: *allow_list
+      check:
+        - cd sem/rsh && cargo test file
+
+    - task: rsh_pipe
+      score: 100
+
+      url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/blob/master/sem/rsh/README.md#pipe
+      allow_list: *allow_list
+      check:
+        - cd sem/rsh && cargo test pipe
+
+    - task: jobserver
+      score: 100
+
+      url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/blob/master/sem/jobserver/README.md
+      allow_list: *allow_list
+      check:
+        - cd sem/jobserver && cargo build && ./test.sh
+
+- group: lab-1-time
+  start: 17-09-2024 18:00
+  deadline: 20-12-2024 23:59
+  second_deadline: 01-02-2025 23:59
+  enabled: true
+  tasks:
+    - task: rtc
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/1-time-1-rtc.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 1-time-1-rtc && cargo test --test 1-time-1-rtc -- -rtc base=2050-12-31T23:59:53 && cargo test --test 1-time-1-rtc -- -rtc base=2050-01-01T11:59:53
+
+    - task: spinlock
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/1-time-3-spinlock.html
+      allow_list: *allow_list
+      check:
+        - cd ku && cargo test --test 1-time-2-spinlock
+
+    - task: sequence-lock
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/1-time-4-sequence-lock.html
+      allow_list: *allow_list
+      check:
+        - cd ku && cargo test --test 1-time-3-sequence-lock --test 1-time-3-deadlock
+
+    - task: correlation-point
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/1-time-5-correlation-point.html
+      allow_list: *allow_list
+      check:
+        - cd ku && cargo test --test 1-time-4-correlation-point && cd - && cd kernel && cargo test --test 1-time-4-correlation-point
+
+    - task: high-resolution-date
+      score: 50
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/1-time-6-correlation-interval.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 1-time-5-high-resolution-date
+
+- group: asm
+  start: 24-09-2024 18:00
+  deadline: 10-10-2024 23:59
+  second_deadline: 01-02-2025 23:59
+  enabled: true
+  tasks:
+    - task: gdb
+      score: 100
+
+      url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/gdb
+      allow_list: *allow_list
+      check:
+        - cd sem/gdb && ./binary.static
+
+    - task: asm
+      score: 100
+
+      url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/asm
+      allow_list: *allow_list
+      check:
+        - cd sem/asm && cargo test
+
+    - task: rop
+      score: 100
+
+      url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/rop
+      allow_list: *allow_list
+      check:
+        - cd sem/rop && cargo test
+
+    - task: asm_syscall
+      score: 100
+
+      url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/asm_syscall
+      allow_list: *allow_list
+      check:
+        - cd sem/asm_syscall && cargo test
+
+- group: lab-2-memory
+  start: 01-10-2024 18:00
+  deadline: 17-10-2024 23:59
+  second_deadline: 01-02-2025 23:59
+  enabled: true
+  tasks:
+    - task: boot-frame-allocator
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/2-mm-5-boot-frame-allocator.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-1-block --test 2-mm-1-boot-frame-allocator
+
+    - task: page-allocator
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/2-mm-6-address-space-1-allocation.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-1-block --test 2-mm-2-page-allocator
+
+    - task: translate
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/2-mm-6-address-space-2-translate.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-3-translate
+
+    - task: map
+      score: 50
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/2-mm-6-address-space-3-map.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-4-map
+
+    - task: main-frame-allocator
+      score: 150
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/2-mm-7-main-frame-allocator.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-*
+
+- group: backtrace
+  start: 08-10-2024 18:00
+  deadline: 24-10-2024 23:59
+  second_deadline: 01-02-2025 23:59
+  enabled: true
+  tasks:
+    - task: backtrace
+      score: 100
+
+      url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/backtrace
+      allow_list: *allow_list
+      check:
+        - cd sem/backtrace && cargo test -- --nocapture --test-threads=1
+
+- group: lab-3-smp
+  start: 15-10-2024 18:00
+  deadline: 31-10-2024 23:59
+  second_deadline: 01-02-2025 23:59
+  enabled: true
+  tasks:
+    - task: big-allocator
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/3-smp-1-memory-allocator-1-big.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-1-big-memory-allocator
+
+    - task: small-allocator
+      score: 150
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/3-smp-1-memory-allocator-2-small.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-1-big-memory-allocator --test 3-smp-2-small-memory-allocator && cd - && cd ku && RUST_LOG="ku::sync::spinlock=info" cargo test --test 3-smp-2-small-memory-allocator -- --nocapture --test-threads=1
+
+    - task: local-apic
+      score: 50
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/3-smp-2-smp-1-local-apic.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-3-local-apic
+
+    - task: cpus
+      score: 50
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/3-smp-2-smp-2-cpus.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-4-cpus
+
+    - task: ap-init
+      score: 150
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/3-smp-2-smp-3-ap-init.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-5-ap-init
+
+- group: atomic
+  start: 22-10-2024 18:00
+  deadline: 07-11-2024 23:59
+  second_deadline: 01-02-2025 23:59
+  enabled: true
+  tasks:
+    - task: atomic
+      score: 50
+
+      url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/atomic
+      allow_list: *allow_list
+      check:
+        - cd sem/atomic && cargo test -- --nocapture --test-threads=1
+
+    - task: rwlock
+      score: 150
+
+      url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/rwlock
+      allow_list: *allow_list
+      check:
+        - cd sem/rwlock && cargo test -- --nocapture --test-threads=1 && cargo clean && MIRIFLAGS="-Zmiri-disable-isolation" cargo miri test -- --nocapture --test-threads=1
+
+- group: lab-4-process
+  start: 29-10-2024 18:00
+  deadline: 14-11-2024 23:59
+  second_deadline: 01-02-2025 23:59
+  enabled: true
+  tasks:
+    - task: elf
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-1-elf.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-[134]-* --test 4-process-1-elf
+
+    - task: permission-checks
+      score: 50
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-2-permission-checks.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-[134]-* --test 4-process-2-permission-checks
+
+    - task: user-mode
+      score: 150
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-3-user-mode.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-[134]-* --test 4-process-3-user-mode
+
+    - task: syscall
+      score: 200
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-4-syscall.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-[134]-* --test 4-process-4-syscall --test 4-process-4-log-value
+
+    - task: table
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-5-table.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-[134]-* --test 4-process-1-elf --test 4-process-2-permission-checks --test 4-process-5-table
+
+    - task: preemption
+      score: 50
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-6-preemption.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-[134]-* --test 4-process-1-elf --test 4-process-2-permission-checks --test 4-process-6-preemption
+
+    - task: scheduler
+      score: 50
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-7-scheduler.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-[134]-* --test 4-process-1-elf --test 4-process-2-permission-checks --test 4-process-7-scheduler
+
+- group: lab-5-um
+  start: 12-11-2024 18:00
+  deadline: 28-11-2024 23:59
+  second_deadline: 01-02-2025 23:59
+  enabled: true
+  tasks:
+    - task: ring-buffer
+      score: 200
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/5-um-1-ring-buffer.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-[134]-* --test 4-process-[123]-* && cd - && cd ku && cargo test --test 5-um-1-ring-buffer && cargo test --test 5-um-1-ring-buffer --release
+
+    - task: memory-syscalls
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/5-um-2-memory.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-[134]-* --test 4-process-[123]-* --test 5-um-2-memory-allocator
+
+    - task: eager-fork
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/5-um-3-eager-fork.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-[134]-* --test 4-process-[123]-* --test 5-um-3-eager-fork
+
+    - task: user-traps
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/5-um-4-trap-handler.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-[134]-* --test 4-process-[123]-* --test 5-um-4-trap-handler
+
+    - task: cow-fork
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/5-um-5-cow-fork.html
+      allow_list: *allow_list
+      check:
+        - cd kernel && cargo test --test 2-mm-* --test 3-smp-[134]-* --test 4-process-[123]-* --test 5-um-*
+
+- group: lab-6-fs
+  start: 26-11-2024 18:00
+  deadline: 12-12-2024 23:59
+  second_deadline: 01-02-2025 23:59
+  enabled: true
+  tasks:
+    - task: block-cache
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/6-fs-1-block-cache.html
+      allow_list: *allow_list
+      check:
+        - rm --force fs.img && make fs.img && cd kernel && cargo test --test 2-mm-* --test 3-smp-1-* --test 6-fs-1-block-cache-1-write --test 6-fs-1-block-cache-2-read
+
+    - task: block-bitmap
+      score: 100
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/6-fs-2-bitmap.html
+      allow_list: *allow_list
+      check:
+        - rm --force fs.img && make fs.img && cd kernel && cargo test --test 2-mm-* --test 3-smp-1-* --test 6-fs-2-bitmap
+
+    - task: inode
+      score: 200
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/6-fs-3-inode.html
+      allow_list: *allow_list
+      check:
+        - rm --force fs.img && make fs.img && cd kernel && cargo test --test 2-mm-* --test 3-smp-1-* --test 6-fs-3-inode
+
+    - task: directory
+      score: 150
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/6-fs-4-directory.html
+      allow_list: *allow_list
+      check:
+        - rm --force fs.img && make fs.img && cd kernel && cargo test --test 2-mm-* --test 3-smp-1-* --test 6-fs-4-directory
+
+    - task: open
+      score: 50
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/6-fs-5-open.html
+      allow_list: *allow_list
+      check:
+        - rm --force fs.img && make fs.img && cd kernel && cargo test --test 2-mm-* --test 3-smp-1-* --test 6-fs-5-*
+
+    - task: lru
+      score: 150
+
+      url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/6-fs-6-lru.html
+      allow_list: *allow_list
+      check:
+        - rm --force fs.img && make fs.img && cd ku && cargo test --test 6-fs-6-*
+
