@@ -1,0 +1,110 @@
+use core::{fmt, num::TryFromIntError, result};
+
+use super::ring_buffer;
+
+
+/// Перечисление для возможных ошибок.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum Error {
+    /// Ошибка загрузки [ELF--файла](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format).
+    Elf(&'static str),
+
+    /// Файл уже существует.
+    FileExists,
+
+    /// Файла не существует.
+    FileNotFound,
+
+    /// Ошибка форматирования сообщения.
+    Fmt(fmt::Error),
+
+    /// Заданное целое значение не помещается в указанный тип.
+    Int(TryFromIntError),
+
+    /// Задано недопустимое значение аргумента.
+    InvalidArgument,
+
+    /// Ошибка на устройстве хранения данных.
+    Medium,
+
+    /// На данный момент данных нет.
+    NoData,
+
+    /// Нет такого устройства хранения данных.
+    NoDisk,
+
+    /// Нет свободного физического фрейма памяти.
+    NoFrame,
+
+    /// Нет заданной страницы виртуальной памяти.
+    NoPage,
+
+    /// Нет заданного процесса.
+    NoProcess,
+
+    /// Нет свободного слота в таблице процессов.
+    NoProcessSlot,
+
+    /// Заданный путь содержит объект, не являющийся директорией.
+    NotDirectory,
+
+    /// Заданный путь указывает на объект, не являющийся файлом.
+    NotFile,
+
+    /// Попытка разыменовать нулевой указатель.
+    Null,
+
+    /// Возникло переполнение.
+    Overflow,
+
+    /// Нарушение прав доступа.
+    PermissionDenied,
+
+    /// Ошибка библиотеки [`postcard`] --- [`postcard::Error`].
+    Postcard(postcard::Error),
+
+    /// Ошибка кольцевого буфера --- [`ring_buffer::Error`].
+    RingBuffer(ring_buffer::Error),
+
+    /// Истёк тайм-аут.
+    Timeout,
+
+    /// Запрошенная функциональность не реализована.
+    Unimplemented,
+
+    /// Неверное выравнивание.
+    WrongAlignment,
+}
+
+
+impl From<fmt::Error> for Error {
+    fn from(e: fmt::Error) -> Self {
+        Error::Fmt(e)
+    }
+}
+
+
+impl From<TryFromIntError> for Error {
+    fn from(e: TryFromIntError) -> Self {
+        Error::Int(e)
+    }
+}
+
+
+impl From<postcard::Error> for Error {
+    fn from(e: postcard::Error) -> Self {
+        Error::Postcard(e)
+    }
+}
+
+
+impl From<ring_buffer::Error> for Error {
+    fn from(e: ring_buffer::Error) -> Self {
+        Error::RingBuffer(e)
+    }
+}
+
+
+/// Тип возвращаемого результата `T` или ошибки [`Error`] ---
+/// мономорфизация [`result::Result`] по типу ошибки.
+pub type Result<T> = result::Result<T, Error>;

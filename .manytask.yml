@@ -1,0 +1,247 @@
+version: 1
+
+
+settings:
+  course_name: OS 2024
+
+  gitlab_base_url: https://gitlab.manytask.org
+  public_repo: os/public-fall-2024
+  students_group: os/students-fall-2024
+
+
+ui:
+  task_url_template: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/$TASK_NAME
+
+  links:
+    Announcements: https://t.me/+6hudiffitLU5MTYy
+    Chat: https://t.me/+PAXh6qX5Nzg1MDcy
+    Zoom: https://yandex.zoom.us/j/91254022146
+    LMS: https://lk.yandexdataschool.ru/courses/2024-autumn/7.1278-arkhitektura-kompiutera-i-operatsionnye-sistemy/
+
+
+deadlines:
+  timezone: Europe/Moscow
+
+  deadlines: hard
+
+  schedule:
+    - group: syscalls
+      start: 2024-09-08 18:00
+      steps:
+        0.5: 2024-09-26 23:59
+      end: 2025-02-01 23:59
+      enabled: true
+      tasks:
+        - task: hello_world
+          score: 100
+          url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/hello_world
+        - task: rsh_fork
+          score: 100
+          url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/blob/master/sem/rsh/README.md
+        - task: rsh_file
+          score: 100
+          url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/blob/master/sem/rsh/README.md#file
+        - task: rsh_pipe
+          score: 100
+          url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/blob/master/sem/rsh/README.md#pipe
+        - task: jobserver
+          score: 100
+          url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/blob/master/sem/jobserver/README.md
+
+    - group: lab-1-time
+      start: 2024-09-17 18:00
+      steps:
+        0.5: 2024-12-20 23:59
+      end: 2025-02-01 23:59
+      enabled: true
+      tasks:
+        - task: rtc
+          is_bonus: true
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/1-time-1-rtc.html
+        - task: spinlock
+          is_bonus: true
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/1-time-3-spinlock.html
+        - task: sequence-lock
+          is_bonus: true
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/1-time-4-sequence-lock.html
+        - task: correlation-point
+          is_bonus: true
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/1-time-5-correlation-point.html
+        - task: high-resolution-date
+          is_bonus: true
+          score: 50
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/1-time-6-correlation-interval.html
+
+    - group: asm
+      start: 2024-09-24 18:00
+      steps:
+        0.5: 2024-10-10 23:59
+      end: 2025-02-01 23:59
+      enabled: true
+      tasks:
+        - task: gdb
+          score: 100
+          url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/gdb
+        - task: asm
+          score: 100
+          url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/asm
+        - task: rop
+          score: 100
+          url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/rop
+        - task: asm_syscall
+          score: 100
+          url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/asm_syscall
+
+    - group: lab-2-memory
+      start: 2024-10-01 18:00
+      steps:
+        0.5: 2024-10-17 23:59
+      end: 2025-02-01 23:59
+      enabled: true
+      tasks:
+        - task: boot-frame-allocator
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/2-mm-5-boot-frame-allocator.html
+        - task: page-allocator
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/2-mm-6-address-space-1-allocation.html
+        - task: translate
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/2-mm-6-address-space-2-translate.html
+        - task: map
+          score: 50
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/2-mm-6-address-space-3-map.html
+        - task: main-frame-allocator
+          score: 150
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/2-mm-7-main-frame-allocator.html
+
+    - group: backtrace
+      start: 2024-10-08 18:00
+      steps:
+        0.5: 2024-10-24 23:59
+      end: 2025-02-01 23:59
+      enabled: true
+      tasks:
+        - task: backtrace
+          score: 100
+          url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/backtrace
+
+    - group: lab-3-smp
+      start: 2024-10-15 18:00
+      steps:
+        0.5: 2024-10-31 23:59
+      end: 2025-02-01 23:59
+      enabled: true
+      tasks:
+        - task: big-allocator
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/3-smp-1-memory-allocator-1-big.html
+        - task: small-allocator
+          score: 150
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/3-smp-1-memory-allocator-2-small.html
+        - task: local-apic
+          score: 50
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/3-smp-2-smp-1-local-apic.html
+        - task: cpus
+          score: 50
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/3-smp-2-smp-2-cpus.html
+        - task: ap-init
+          is_bonus: true
+          score: 150
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/3-smp-2-smp-3-ap-init.html
+
+    - group: atomic
+      start: 2024-10-22 18:00
+      steps:
+        0.5: 2024-11-07 23:59
+      end: 2025-02-01 23:59
+      enabled: true
+      tasks:
+        - task: atomic
+          score: 50
+          url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/atomic
+        - task: rwlock
+          score: 150
+          url: https://gitlab.com/sergey-v-galtsev/nikka-public/-/tree/master/sem/rwlock
+
+    - group: lab-4-process
+      start: 2024-10-29 18:00
+      steps:
+        0.5: 2024-11-14 23:59
+      end: 2025-02-01 23:59
+      enabled: true
+      tasks:
+        - task: elf
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-1-elf.html
+        - task: permission-checks
+          score: 50
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-2-permission-checks.html
+        - task: user-mode
+          score: 150
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-3-user-mode.html
+        - task: syscall
+          score: 200
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-4-syscall.html
+        - task: table
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-5-table.html
+        - task: preemption
+          score: 50
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-6-preemption.html
+        - task: scheduler
+          score: 50
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/4-process-7-scheduler.html
+
+    - group: lab-5-um
+      start: 2024-11-12 18:00
+      steps:
+        0.5: 2024-11-28 23:59
+      end: 2025-02-01 23:59
+      enabled: true
+      tasks:
+        - task: ring-buffer
+          score: 200
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/5-um-1-ring-buffer.html
+        - task: memory-syscalls
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/5-um-2-memory.html
+        - task: eager-fork
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/5-um-3-eager-fork.html
+        - task: user-traps
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/5-um-4-trap-handler.html
+        - task: cow-fork
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/5-um-5-cow-fork.html
+
+    - group: lab-6-fs
+      start: 2024-11-26 18:00
+      steps:
+        0.5: 2024-12-12 23:59
+      end: 2025-02-01 23:59
+      enabled: true
+      tasks:
+        - task: block-cache
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/6-fs-1-block-cache.html
+        - task: block-bitmap
+          score: 100
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/6-fs-2-bitmap.html
+        - task: inode
+          score: 200
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/6-fs-3-inode.html
+        - task: directory
+          score: 150
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/6-fs-4-directory.html
+        - task: open
+          score: 50
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/6-fs-5-open.html
+        - task: lru
+          score: 150
+          url: https://sergey-v-galtsev.gitlab.io/labs-description/lab/book/6-fs-6-lru.html
