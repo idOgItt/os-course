@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "check",
+    "compose",
+    "submit",
+]
+
+resolver = "2"
