@@ -1,0 +1,10 @@
+digraph file_system {
+    rankdir = LR
+    ranksep = 2.0
+
+    fontname = "Helvetica,Arial,sans-serif"
+
+    node [shape = record]
+
+    fs [label = "{{блок_0\l | блок_1\l | блок_2\l\n\l\nблок_K+1\l | блок_K+2\l\nблок_K+L+1\l | блок_K+L+2\l\n\n\nблок_K+L+M+1\l | блок_K+L+M+2\l\n\n\n\n\n\n\n\nблок_N-1\l } | {Загрузочный сектор и таблица разделов\n | Суперблок | \lБитмап свободных блоков\n\lK блоков хранят N бит + выравнивание\n\l | \lБитмап свободных номеров inode\n\l | \l\nТаблица inode\n\n\l | \l\n\n\nДанные файлов и директорий\n\n\n\n\n\l }}"]
+}

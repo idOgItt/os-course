@@ -1,0 +1,56 @@
+cargo-features = ["edition2024"]
+
+[package]
+    name = "bga"
+    version = "0.1.0"
+    authors = ["Sergey V. Galtsev <sergey-v-galtsev@github.com>"]
+    edition = "2024"
+    license = "GNU AGPLv3"
+
+
+[dependencies]
+    acpi = "*"
+    bitflags = "*"
+    bootloader = { version = "0.9.*", features = ["map_physical_memory"] }
+    chrono = { version = "*", default-features = false }
+    derive_more = { version = "*", default-features = false, features = ["full"] }
+    embedded-graphics = "=0.7.1"
+    embedded-graphics-core = "=0.3.3"
+    embedded-plots = "=0.2.0"
+    itertools = { version = "*", default-features = false }
+    lazy_static = { version = "*", features = ["spin_no_std"] }
+    memoffset = { version = "*", features = ["unstable_const"] }
+    num-integer = { version = "*", default-features = false }
+    postcard = "*"
+    rand = { version = "*", default-features = false, features = ["small_rng"] }
+    scopeguard = { version = "*", default-features = false }
+    serde = { version = "*", default-features = false, features = ["alloc"] }
+    spin = "*"
+    static_assertions = "*"
+    tinypci = { git = "https://github.com/sergey-v-galtsev/tinypci", version = "*", default-features = false }
+    tracing = { git = "https://github.com/tokio-rs/tracing", version = "*", default-features = false }
+    tracing-core = { git = "https://github.com/tokio-rs/tracing", version = "*", default-features = false }
+    volatile = "*"
+    x86 = "*"
+    x86_64 = "*"
+    xmas-elf = "*"
+
+    kernel = { path = "../../../kernel" }
+    ku = { path = "../../../ku" }
+    pic8259 = { path = "../../../pic8259" }
+    text = { path = "../../../text" }
+
+
+[package.metadata.bootimage]
+    # Отвечает за `cargo run`.
+    run-args = [
+        "-m", "size=128M",
+        "-smp", "cpus=4",
+        "-device", "isa-debug-exit,iobase=0xF4,iosize=0x04",
+        "-serial", "stdio",
+        "-vga", "std",
+    ]
+
+
+[package.metadata.bootloader]
+    physical-memory-offset = "0xFFFFF00000000000"
