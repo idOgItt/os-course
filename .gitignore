@@ -1,0 +1,4 @@
+target/
+**/.vscode
+fs.img
+.gdb_history
