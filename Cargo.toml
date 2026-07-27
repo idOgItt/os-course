@@ -1,0 +1,31 @@
+cargo-features = ["edition2024"]
+
+[workspace]
+    members = [
+        "kernel",
+        "ku",
+        "macros",
+        "pic8259",
+        "serial",
+        "text",
+
+        "user/cow_fork",
+        "user/eager_fork",
+        "user/exit",
+        "user/lib",
+        "user/log_value",
+        "user/loop",
+        "user/check_context",
+        "user/memory_allocator",
+        "user/page_fault",
+        "user/sched_yield",
+        "user/trap_handler",
+
+        "kernel/examples/bga",
+    ]
+
+    resolver = "2"
+
+
+[profile.user]
+    inherits="dev"
