@@ -1,0 +1,21 @@
+cargo-features = ["edition2024"]
+
+[package]
+    name = "macros"
+    version = "0.1.0"
+    edition = "2024"
+    # The one to blame
+    authors = ["Oleg Shatov <oleq.shatov@yandex.ru>"]
+    license = "GNU AGPLv3"
+
+[dependencies]
+    syn = { version = "2", features = ["full"] }
+    quote = "1"
+    proc-macro2 = "1"
+
+[dev-dependencies]
+    trybuild = "1"
+    macrotest = "1"
+
+[lib]
+    proc-macro = true
