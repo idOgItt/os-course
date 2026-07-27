@@ -1,0 +1,18 @@
+[build]
+    rustflags = [
+        "--codegen", "debuginfo=full",
+        "--codegen", "force-frame-pointers=yes",
+        "--codegen", "relocation-model=dynamic-no-pic",
+    ]
+
+    target = "x86_64-unknown-linux-gnu"
+
+
+[unstable]
+    build-std = [
+        "alloc",
+        "compiler_builtins",
+        "core",
+        "std",
+        "test",
+    ]
