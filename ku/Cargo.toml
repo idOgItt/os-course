@@ -1,0 +1,38 @@
+cargo-features = ["edition2024"]
+
+[package]
+    name = "ku"
+    version = "0.1.0"
+    authors = ["Sergey V. Galtsev <sergey-v-galtsev@github.com>"]
+    edition = "2024"
+    license = "GNU AGPLv3"
+
+
+[dependencies]
+    atomic-memcpy = "*"
+    bitflags = "*"
+    chrono = { version = "*", default-features = false }
+    derive_more = { version = "*", default-features = false, features = ["full"] }
+    heapless = "*"
+    itertools = { version = "*", default-features = false }
+    memoffset = { version = "*", features = ["unstable_const"] }
+    num-traits = { version = "*", default-features = false }
+    num_enum = { version = "*", default-features = false }
+    number_prefix = { version = "*", default-features = false }
+    postcard = "*"
+    rlibc = "*"
+    scopeguard = { version = "*", default-features = false }
+    serde = { version = "*", default-features = false }
+    spin = "*"
+    static_assertions = "*"
+    tracing = { git = "https://github.com/tokio-rs/tracing", version = "*", default-features = false }
+    tracing-core = { git = "https://github.com/tokio-rs/tracing", version = "*", default-features = false }
+    x86_64 = "*"
+    xmas-elf = "*"
+
+
+[dev-dependencies]
+    nix = { version = "0.27.*", features = ["mman"] }
+    rand = { version = "*", default-features = false, features = ["small_rng"] }
+    rstest = "*"
+    tracing-subscriber = { git = "https://github.com/tokio-rs/tracing", features = ["env-filter"] }

@@ -1,0 +1,16 @@
+binop_separator = "Back"
+blank_lines_upper_bound = 2
+chain_width = 80
+combine_control_expr = false
+empty_item_single_line = false
+hex_literal_case = "Upper"
+imports_granularity = "Crate"
+imports_layout = "HorizontalVertical"
+match_block_trailing_comma = true
+normalize_comments = true
+normalize_doc_attributes = true
+struct_variant_width = 0
+use_field_init_shorthand = true
+format_code_in_doc_comments = true
+# wrap_comments = true # This ruins `compose` comments and logical newlines in doc comments.
+comment_width = 100
