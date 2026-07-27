@@ -1,0 +1,13 @@
+cargo-features = ["edition2024"]
+
+
+[package]
+    name = "check_context"
+    version = "0.1.0"
+    authors = ["Oleg Shatov <oleq.shatov@yandex.ru>"]
+    edition = "2024"
+    license = "GNU AGPLv3"
+
+
+[dependencies]
+    lib = { path = "../lib" }

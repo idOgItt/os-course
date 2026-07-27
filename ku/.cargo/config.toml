@@ -1,0 +1,5 @@
+[build]
+    rustflags = [
+        "--codegen", "force-frame-pointers=yes",
+        "--codegen", "relocation-model=dynamic-no-pic",
+    ]
