@@ -1,0 +1,14 @@
+cargo-features = ["edition2024"]
+
+[package]
+    name = "cow_fork"
+    version = "0.1.0"
+    authors = ["Sergey V. Galtsev <sergey-v-galtsev@github.com>"]
+    edition = "2024"
+    license = "GNU AGPLv3"
+
+[dependencies]
+    heapless = "*"
+
+    ku = { path = "../../ku" }
+    lib = { path = "../lib" }
