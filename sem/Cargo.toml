@@ -1,0 +1,15 @@
+[workspace]
+members = [
+    "hello_world",
+    "rsh",
+    "jobserver",
+    "gdb",
+    "asm",
+    "rop",
+    "asm_syscall",
+    "backtrace",
+    "rwlock",
+    "atomic",
+]
+
+resolver = "1"

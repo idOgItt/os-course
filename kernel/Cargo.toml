@@ -1,0 +1,73 @@
+cargo-features = ["edition2024"]
+
+[package]
+    name = "kernel"
+    version = "0.1.0"
+    authors = ["Sergey V. Galtsev <sergey-v-galtsev@github.com>"]
+    edition = "2024"
+    license = "GNU AGPLv3"
+
+
+[dependencies]
+    acpi = "*"
+    bitflags = "*"
+    bootloader = { version = "0.9.*", features = ["map_physical_memory"] }
+    chrono = { version = "*", default-features = false }
+    derive_more = { version = "*", default-features = false, features = ["full"] }
+    duplicate = "*"
+    itertools = { version = "*", default-features = false }
+    lazy_static = { version = "*", features = ["spin_no_std"] }
+    memoffset = { version = "*", features = ["unstable_const"] }
+    num-integer = { version = "*", default-features = false }
+    num_enum = { version = "*", default-features = false }
+    postcard = "*"
+    rand = { version = "*", default-features = false, features = ["small_rng"] }
+    scopeguard = { version = "*", default-features = false }
+    serde = { version = "*", default-features = false, features = ["alloc"] }
+    spin = "*"
+    static_assertions = "*"
+    tracing = { git = "https://github.com/tokio-rs/tracing", version = "*", default-features = false }
+    tracing-core = { git = "https://github.com/tokio-rs/tracing", version = "*", default-features = false }
+    x86 = "*"
+    x86_64 = "*"
+
+    ku = { path = "../ku" }
+    pic8259 = { path = "../pic8259" }
+    text = { path = "../text" }
+
+
+[dev-dependencies]
+    xmas-elf = "*"
+    introsort = { version = "*", default-features = false }
+
+
+[package.metadata.bootimage]
+    # Отвечает за `cargo run`.
+    run-args = [
+        "-m", "size=128M",
+        "-smp", "cpus=4",
+        "-device", "isa-debug-exit,iobase=0xF4,iosize=0x04",
+        # Для перенаправления лога в файл `kernel/serial.out` поменяйте опцию `-serial`:
+        # "-serial", "file:serial.out",
+        "-serial", "stdio",
+        # Опция `-display none` отключает окно с монитором эмулируемого компьютера.
+        "-display", "none",
+        "-drive", "file=../fs.img,index=1,media=disk,driver=raw",
+    ]
+
+    # Отвечает за `cargo test ...`.
+    test-args = [
+        "-m", "size=128M",
+        "-smp", "cpus=4",
+        "-device", "isa-debug-exit,iobase=0xF4,iosize=0x04",
+        "-serial", "stdio",
+        "-display", "none",
+        "-drive", "file=../fs.img,index=1,media=disk,driver=raw",
+    ]
+
+    test-success-exit-code = 3
+    test-timeout = 300
+
+
+[package.metadata.bootloader]
+    physical-memory-offset = "0xFFFFF00000000000"
