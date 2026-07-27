@@ -1,0 +1,13 @@
+grade:
+  image: gitlab.manytask.org:5050/os/public-fall-2024/nikka-public
+  script:
+    - if [[ "$CI_COMMIT_REF_NAME" == submit/* ]]; then
+        cargo run
+          --manifest-path /opt/shad/nikka/tools/check/Cargo.toml
+          --
+          --student-repo $CI_PROJECT_DIR
+          --original-repo /opt/shad/nikka
+          --ci-branch-name $CI_COMMIT_REF_NAME
+          --user-id $GITLAB_USER_ID;
+      fi
+  timeout: 15 minutes
