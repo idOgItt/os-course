@@ -1,0 +1,75 @@
+#![deny(warnings)]
+#![feature(custom_test_frameworks)]
+#![no_main]
+#![no_std]
+#![reexport_test_harness_main = "test_main"]
+#![test_runner(kernel::test_runner)]
+
+
+use kernel::{
+    log::debug,
+    memory::test_scaffolding::forbid_frame_leaks,
+    process::{test_scaffolding, Process, Scheduler, Table},
+    trap::{Trap, TRAP_STATS},
+    Subsystems,
+};
+
+
+mod gen_main;
+mod process_helpers;
+
+
+gen_main!(Subsystems::MEMORY | Subsystems::SMP | Subsystems::PROCESS);
+
+
+const EXIT_ELF: &[u8] = page_aligned!("../../target/kernel/user/exit");
+const PAGE_FAULT_ELF: &[u8] = page_aligned!("../../target/kernel/user/page_fault");
+const SCHED_YIELD_ELF: &[u8] = page_aligned!("../../target/kernel/user/sched_yield");
+
+
+#[test_case]
+fn syscall_sched_yield() {
+    let _guard = forbid_frame_leaks();
+
+    let mut process = process_helpers::allocate(SCHED_YIELD_ELF);
+    let pid = process.pid();
+
+    test_scaffolding::disable_interrupts(&mut process);
+
+    let start_page_faults = TRAP_STATS[Trap::PageFault].count();
+
+    Process::enter_user_mode(process);
+
+    assert_eq!(
+        TRAP_STATS[Trap::PageFault].count(),
+        start_page_faults,
+        "maybe the read-dont-modify-write construction was used for reading the RTC time from the user space",
+    );
+
+    for _ in 0..2 {
+        let process = Table::get(pid).expect("failed to find the new process in the process table");
+
+        let user_registers = test_scaffolding::registers(&process);
+        debug!(?user_registers, "returned from the user space");
+
+        Process::enter_user_mode(process);
+    }
+
+    process_helpers::free(pid);
+}
+
+
+#[test_case]
+fn scheduler() {
+    let exit_pid = process_helpers::allocate(EXIT_ELF).pid();
+    let page_fault_pid = process_helpers::allocate(PAGE_FAULT_ELF).pid();
+
+    Scheduler::enqueue(exit_pid);
+    Scheduler::enqueue(page_fault_pid);
+
+    while Scheduler::run_one() {}
+
+    Table::get(exit_pid).expect_err("the 'exit' process was not run up to its completion");
+    Table::get(page_fault_pid)
+        .expect_err("the 'page_fault' process was not run up to its completion");
+}
