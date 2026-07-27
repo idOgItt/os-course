@@ -1,0 +1,41 @@
+variables:
+  GIT_STRATEGY: clone
+
+stages:
+  - deploy
+
+build-image:
+  tags:
+    - docker
+  stage: deploy
+  script:
+    - docker build . -t cr.yandex/crp9onavos88ug32d5r2/grader/os
+    - docker push cr.yandex/crp9onavos88ug32d5r2/grader/os
+    - docker image prune -f --filter "until=24h"
+    - docker system prune -f
+
+push-public:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: on_success
+  image: rust:1.81
+  script:
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/sergey-v-galtsev/nikka-public
+    - cargo run --manifest-path tools/compose/Cargo.toml -- --in-path . --out-path ./nikka-public --spare ./.git --spare ./nikka-public
+    - git config --global user.name "Sergey V. Galtsev"
+    - git config --global user.email "sergey-v-galtsev@github.com"
+    - cd nikka-public && git add --all && git commit --allow-empty -m "Export public files" && git push https://${CI_PUSH_TO_NIKKA_PUBLIC}@gitlab.com/sergey-v-galtsev/nikka-public.git HEAD:master
+
+deploy-manytask:
+  image: curlimages/curl:latest
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: on_success
+  script:
+    - 'curl --fail --silent -X POST -H "Authorization: Bearer $TESTER_TOKEN"
+        -H "Content-type: application/x-yaml" --data-binary "@.manytask.yml"
+        "https://os.manytask.org/api/update_config"'
+    - 'curl --fail --silent -X POST -H "Authorization: Bearer $TESTER_TOKEN"
+        "https://os.manytask.org/api/update_cache"'
