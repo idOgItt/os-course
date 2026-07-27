@@ -1,0 +1,11 @@
+[toolchain]
+    channel = "nightly-2024-09-07"
+
+    components = [
+        "clippy",
+        "llvm-tools-preview",
+        "miri",
+        "rust-src",
+        "rustc-dev",
+        "rustfmt",
+    ]
