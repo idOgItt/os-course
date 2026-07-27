@@ -1,0 +1,19 @@
+cargo-features = ["edition2024"]
+
+[package]
+name = "text"
+version = "0.1.0"
+authors = ["Sergey V. Galtsev <sergey-v-galtsev@github.com>"]
+edition = "2024"
+license = "GNU AGPLv3"
+
+[dependencies]
+bitflags = "*"
+lazy_static = { version = "*", features = ["spin_no_std"] }
+static_assertions = "*"
+volatile = "=0.4.5"
+x86 = "*"
+x86_64 = "*"
+
+ku = { path = "../ku" }
+serial = { path = "../serial" }
